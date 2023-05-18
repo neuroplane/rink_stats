@@ -4,12 +4,9 @@ const canvas_array = ["rink", "heatmap"]
 
 let screen_width = window.innerWidth;
 let screen_height = window.innerHeight
-let ctx_width = screen_width
-let ctx_height = screen_height
 let center_x = screen_width/2
 let center_y = screen_height/2
 let kh = 56/screen_height
-let kw = 26/screen_width
 console.log(screen_width/2 + ", " + screen_height/2)
 
 function render() {
@@ -38,13 +35,12 @@ ctx.width = screen_width*resolution
 ctx.height = screen_height*resolution
 
 
-function roundedRect(ctx, x, y, width, height, radius, fill, stroke, lineWidth) {
+function roundedRect(ctx, x, y, width, height, radius, fill, stroke) {
     const useStroke = typeof stroke == 'undefined' || stroke !== 0;
     radius = typeof radius == 'undefined' ? 5 : radius;
 
     // Save previous context
     ctx.save();
-    //ctx.lineWidth = -1;
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
     ctx.lineTo(x + width - radius, y);
@@ -94,9 +90,6 @@ function circle(ctx, kx, ky, radius, color, width) {
 
 }
 
-function rectangle() {
-    
-}
 //Лицевые
 // Лицевая Север
 
