@@ -1,26 +1,29 @@
-let resolution = 1;
+let resolution = 3;
 
 
 //let ctx_width = 360*resolution
 //let ctx_height = 648*resolution
-let screen_width = window.screen.width;
-let screen_height = window.screen.height;
+let screen_width = window.innerWidth;
+let screen_height = window.innerHeight;
 let ctx_width = screen_width
 let ctx_height = screen_height
+//alert(screen_width + " х " + screen_height)
 
 const main = document.getElementById("main_id");
 //const div_id = "id" + Math.random().toString(16).slice(2)
 main.setAttribute("class", "text-center")
 let element = document.createElement("canvas")
-element.setAttribute("style", "width:"+screen_width)
-element.setAttribute("style", "height:"+screen_height)
-element.id = "heatmap"
+//element.setAttribute("style", "width:"+screen_width)
+//element.setAttribute("style", "height:"+screen_height)
+element.id = "canvas"
 element.width = screen_width
 element.height = screen_height
 document.getElementById("main_id").append(element)
 //
-const c = document.getElementById("heatmap");
+const c = document.getElementById("canvas");
 const ctx = c.getContext("2d");
+ctx.width = screen_width*3
+ctx.height = screen_height*3
 
 
 function roundedRect(ctx, x, y, width, height, radius, fill, stroke, lineWidth) {
@@ -29,7 +32,7 @@ function roundedRect(ctx, x, y, width, height, radius, fill, stroke, lineWidth) 
 
     // Save previous context
     ctx.save();
-    ctx.lineWidth = 1;
+    //ctx.lineWidth = -1;
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
     ctx.lineTo(x + width - radius, y);
@@ -49,59 +52,49 @@ function roundedRect(ctx, x, y, width, height, radius, fill, stroke, lineWidth) 
         ctx.fillStyle = fill;
         ctx.fill();
     }
-
-    // Restore original context
     ctx.restore();
-
 }
 
-function to_x(x) {
-    let real_x = x/resolution/10
-    return real_x
+
+//ctx.strokeStyle = "#db5c5c"
+//ctx.lineWidth = 5
+function h_line(ctx, x, y, color) {
+    ctx.save();
+    ctx.moveTo(x, y);
 }
 
-function to_y(y) {
-    let real_y = y*10*resolution/0.835
-    return real_y
+function circle(ctx, x, y, radius, color, stroke) {
+
 }
-
-//
-
-ctx.strokeStyle = "#db5c5c"
-ctx.lineWidth = 5
+//Лицевые
 // Лицевая Север
-ctx.beginPath()
-ctx.moveTo(0, to_y(4))
-ctx.lineTo(ctx_width, to_y(4))
-ctx.stroke()
-//
-ctx.beginPath()
-ctx.moveTo(ctx_width/2, 0)
-ctx.lineTo(ctx_width/2, ctx_height)
-ctx.stroke()
-// Лицевая Юг
-ctx.beginPath()
-ctx.moveTo(0, ctx_height - to_y(4))
-ctx.lineTo(ctx_width, ctx_height - to_y(4))
-ctx.stroke()
-// Центральная
-ctx.beginPath()
-ctx.moveTo(0, ctx_height / 2)
-ctx.lineTo(ctx_width, ctx_height / 2)
-ctx.stroke()
-// Синяя Север
-ctx.strokeStyle = "#5c95db"
-ctx.beginPath()
-//ctx.moveTo(0, (ctx_height - to_y(4)*2) / 3)
-ctx.moveTo(0, 552)
-ctx.lineTo(ctx_width, (ctx_height - to_y(8)) / 3)
-ctx.stroke()
-// Синяя Юг
-ctx.strokeStyle = "#5c95db"
-ctx.beginPath()
-ctx.moveTo(0, to_y(4) + (ctx_height - to_y(8)/3))
-ctx.lineTo(ctx_width, (ctx_height - to_y(8))/3 * 2)
-ctx.stroke()
 
-roundedRect(ctx, 5, 5 , screen_width-10, screen_height-10, 65*resolution, "", "black", 1)
+// Лицевая Юг
+
+// Центральная
+
+// Синяя Север
+
+// Синяя Юг
+roundedRect(ctx, 1, 1 , screen_width-2, screen_height-2, 85, "#7dc5d2", 0, "")
 //alert(to_y(4))
+const data = []
+const heat = simpleheat('canvas');
+function getCursorPosition(canvas, event) {
+    const rect = canvas.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    //alert("x: " + x + " y: " + y)
+    ctx.save()
+    heat.data(data);
+    const point = [x,y, 0.2]
+    heat.add(point);
+    heat.draw();
+    ctx.restore()
+
+}
+
+const canvas = document.querySelector('canvas')
+canvas.addEventListener('mousedown', function(e) {
+    getCursorPosition(canvas, e)
+})
