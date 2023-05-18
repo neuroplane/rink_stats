@@ -19,17 +19,20 @@
 		top: 0;
 		left: 0;
 		/*width: 100%;*/
-		height: 100%;
+		/*height: 100%;*/
 		/*background: #a9a9a9*/
 	}
 	html, body {margin: 0; height: 100%; overflow: hidden}
 	.render { position: absolute;
-		left:0; top:0; width:100%;
-		/*height:100%*/ }
+		top:0;
+		/*width:100%;*/
+		height:100% }
 
 </style>
 <body>
-<div id="main_id" class="text-center"></div>
+<div id="main_id" class="text-center">
+
+</div>
 <div class="container  mt-1">
 	<div class="row">
 		<div class="col-md-6 offset-md-3 align-middle align-items-center">
@@ -45,14 +48,6 @@
 
 <!------------------------------------------------>
 <script>
-	const colors_array = {
-		"W": "#efefef",
-		"R": "#b71234",
-		"B": "#0046ad",
-		"G": "#009b48",
-		"O": "#ee8923",
-		"Y": "rgba(255,213,0,0.97)"
-	}
 	const script = document.createElement('script');
 	script.src='js/json.js'+ '?t=' + Date.now();
 	document.body.appendChild(script);

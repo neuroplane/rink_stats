@@ -2,12 +2,13 @@ let resolution = 3;
 
 const canvas_array = ["rink", "heatmap"]
 
-let screen_width = window.innerWidth;
-let screen_height = window.innerHeight
+
+let screen_height = window.innerHeight*resolution
+let screen_width = screen_height/2.2;
 let center_x = screen_width/2
 let center_y = screen_height/2
-let kh = 56/screen_height
-console.log(screen_width/2 + ", " + screen_height/2)
+let kh = 56/window.innerHeight
+console.log(screen_width + ", " + screen_height)
 
 function render() {
     for (const canvas in canvas_array) {
@@ -15,13 +16,13 @@ function render() {
         element.id = canvas_array[canvas]
         element.width = screen_width
         element.height = screen_height
-        element.className = "render"
+        element.className = "render text-center"
         document.getElementById("main_id").append(element)
     }
 }
 
 render()
-/*const main = document.getElementById("main_id");
+/*const main =  document.getElementById("main_id");
 main.setAttribute("class", "text-center")
 let element = document.createElement("canvas")
 element.id = "canvas"
@@ -66,14 +67,16 @@ function roundedRect(ctx, x, y, width, height, radius, fill, stroke) {
 
 //ctx.strokeStyle = "#db5c5c"
 //ctx.lineWidth = 5
-function h_line(ctx, k, color, width) {
+function h_line(ctx, k, color, width, cut) {
     ctx.save();
     ctx.beginPath()
-    ctx.moveTo(0, center_y-center_y*k);
-    ctx.lineTo(screen_width, center_y - center_y*k)
+    ctx.moveTo(cut/2, center_y-center_y*k);
+    ctx.lineTo(screen_width-cut/2, center_y - center_y*k)
     ctx.closePath()
     ctx.strokeStyle = color
     ctx.lineWidth = width
+    ctx.lineCap = 'butt';
+    ctx.lineJoin = "miter";
     ctx.stroke()
     ctx.restore()
 }
@@ -81,8 +84,8 @@ function h_line(ctx, k, color, width) {
 function circle(ctx, kx, ky, radius, color, width) {
     ctx.save();
     ctx.beginPath()
-    ctx.arc(center_x-center_x*kx, center_y - center_y*ky, radius, 0, 2 * Math.PI);
-    ctx.lineWidth = width
+    ctx.arc(center_x-center_x*kx, center_y - center_y*ky, radius*resolution, 0, 2 * Math.PI);
+    ctx.lineWidth = width*resolution
     ctx.strokeStyle = color
     ctx.stroke()
     ctx.closePath()
@@ -99,18 +102,19 @@ function circle(ctx, kx, ky, radius, color, width) {
 
 // Синяя Север
 
-// Синяя Юг 
+// Синяя Юг
 
 const faceoffs = 500
 
-roundedRect(ctx, 1, 1 , screen_width-2, screen_height-2, 50, "#d6f1f6", 0, "")
-h_line(ctx, 0.9, "#640000", 1)
-h_line(ctx, -0.9, "#640000", 1)
-h_line(ctx, 0, "#b72323",6)
-h_line(ctx, 0.3, "#3270ce",6)
-h_line(ctx, -0.3, "#3270ce",6)
+
+roundedRect(ctx, 1, 1 , screen_width-2, screen_height-2, 50*resolution, "#d6f1f6", 0, "")
+h_line(ctx, 0.9, "#b3d0d5", 2,30)
+h_line(ctx, -0.9, "#b3d0d5", 2, 30)
+h_line(ctx, 0, "#b72323",6, 0)
+h_line(ctx, 0.3, "#3270ce",6, 0)
+h_line(ctx, -0.3, "#3270ce",6, 0)
 circle(ctx,0,0,faceoffs*kh,"#b72323",3)
-circle(ctx,0,0,2,"#cccccc",2)
+circle(ctx,0,0,2,"#d6f1f6",2)
 circle(ctx,0.5,0.65,faceoffs*kh,"#b72323",3)
 circle(ctx,-0.5,0.65,faceoffs*kh,"#b72323",3)
 circle(ctx,-0.5,-0.65,faceoffs*kh,"#b72323",3)
@@ -125,7 +129,7 @@ function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
-    //alert("x: " + x + " y: " + y)
+    alert("ГОЛ или НЕТ?: " + "x: " + x + " y: " + y)
     ctx.save()
     heat.data(data);
     const point = [x,y, 0.3]
