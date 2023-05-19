@@ -34,7 +34,7 @@
 
 </style>
 <body>
-<div class="">
+<div id="main_id" class="">
 	<canvas class="render position-absolute top-50 start-50 translate-middle" id='my-canvas' ></canvas>
 	<canvas class="render position-absolute top-50 start-50 translate-middle" id='heatmap' ></canvas>
 </div>
@@ -149,8 +149,25 @@
 
 	const modal_toggle = document.getElementById('heatmap')
 	modal_toggle.addEventListener('mouseup', function(e) {
-		openModal()
+		//openModal()
 	})
+
+
+</script>
+<script>
+	const script = document.createElement('script');
+	script.src='js/json.js'+ '?t=' + Date.now();
+	document.body.appendChild(script);
+	script.addEventListener('load', function() {
+		const script3 = document.createElement('script');
+		script3.src='./js/heatmap.js'+ '?t=' + Date.now();
+		document.body.appendChild(script3);
+		console.log('script loaded')
+		const script2 = document.createElement('script');
+		script2.src='js/main.js'+ '?t=' + Date.now();
+		document.body.appendChild(script2);
+
+	});
 
 
 </script>
