@@ -1,9 +1,11 @@
 let resolution = 3;
 
-const canvas_array = ["rink", "heatmap"]
+const canvas_array = [
+    "rink",
+    "heatmap"]
 
 
-let screen_height = window.innerHeight*resolution
+let screen_height = window.innerHeight
 let screen_width = screen_height/2.2;
 let center_x = screen_width/2
 let center_y = screen_height/2
@@ -16,24 +18,17 @@ function render() {
         element.id = canvas_array[canvas]
         element.width = screen_width
         element.height = screen_height
-        element.className = "render text-center"
+        element.className = "render"
         document.getElementById("main_id").append(element)
     }
 }
 
 render()
-/*const main =  document.getElementById("main_id");
-main.setAttribute("class", "text-center")
-let element = document.createElement("canvas")
-element.id = "canvas"
-element.width = screen_width
-element.height = screen_height
-document.getElementById("main_id").append(element)
-/*/
+
 const c = document.getElementById("rink");
 const ctx = c.getContext("2d");
-ctx.width = screen_width*resolution
-ctx.height = screen_height*resolution
+ctx.width = screen_width*resolution*10
+ctx.height = screen_height*resolution*10
 
 
 function roundedRect(ctx, x, y, width, height, radius, fill, stroke) {
@@ -84,8 +79,8 @@ function h_line(ctx, k, color, width, cut) {
 function circle(ctx, kx, ky, radius, color, width) {
     ctx.save();
     ctx.beginPath()
-    ctx.arc(center_x-center_x*kx, center_y - center_y*ky, radius*resolution, 0, 2 * Math.PI);
-    ctx.lineWidth = width*resolution
+    ctx.arc(center_x-center_x*kx, center_y - center_y*ky, radius, 0, 2 * Math.PI);
+    ctx.lineWidth = width
     ctx.strokeStyle = color
     ctx.stroke()
     ctx.closePath()
@@ -107,7 +102,7 @@ function circle(ctx, kx, ky, radius, color, width) {
 const faceoffs = 500
 
 
-roundedRect(ctx, 1, 1 , screen_width-2, screen_height-2, 50*resolution, "#d6f1f6", 0, "")
+roundedRect(ctx, 1, 1 , screen_width-2, screen_height-2, 50, "#d6f1f6", 0, "")
 h_line(ctx, 0.9, "#b3d0d5", 2,30)
 h_line(ctx, -0.9, "#b3d0d5", 2, 30)
 h_line(ctx, 0, "#b72323",6, 0)
@@ -129,7 +124,7 @@ function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
-    alert("ГОЛ или НЕТ?: " + "x: " + x + " y: " + y)
+    //alert("ГОЛ или НЕТ?: " + "x: " + x + " y: " + y)
     ctx.save()
     heat.data(data);
     const point = [x,y, 0.3]
