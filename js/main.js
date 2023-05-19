@@ -18,12 +18,12 @@ function getCursorPosition(canvas, event) {
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
     console.log(x, y, rect.left, rect.top)
-    ctx.save()
+
     heat.data(data);
     const point = [x,y, 0.3]
     heat.add(point);
     heat.draw(0.05);
-    ctx.restore()
+
 
 }
 /*---------- s3----------*/
