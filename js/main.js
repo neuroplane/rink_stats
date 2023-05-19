@@ -4,10 +4,10 @@ let screen_height = window.innerHeight
 let screen_width = screen_height/2.2;
 console.log(screen_width + ", " + screen_height)
 
-const c = document.getElementById("my-canvas");
+const c = document.getElementById("heatmap");
 const ctx = c.getContext("2d");
-ctx.width = screen_width*resolution
-ctx.height = screen_height*resolution
+ctx.width = image.width
+ctx.height = image.height
 
 
 //alert(to_y(4))
@@ -17,7 +17,7 @@ function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
-    //alert("ГОЛ или НЕТ?: " + "x: " + x + " y: " + y)
+    console.log(x, y, rect.left, rect.top)
     ctx.save()
     heat.data(data);
     const point = [x,y, 0.3]
@@ -29,5 +29,5 @@ function getCursorPosition(canvas, event) {
 /*---------- s3----------*/
 const canvas_heatmap = document.querySelector('#heatmap')
 canvas_heatmap.addEventListener('mouseup', function(e) {
-    getCursorPosition(canvas, e)
+    getCursorPosition(canvas_heatmap, e)
 })
