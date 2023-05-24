@@ -101,8 +101,6 @@
 	const canvas = document.querySelector('#my-canvas');
 	const context = canvas.getContext('2d');
 	const image = new Image();
-	const ih = image.height
-	const iw = image.width
 	image.onload = function() {
 		let cvs = document.getElementById("my-canvas")
 		cvs.width = image.width
@@ -115,7 +113,6 @@
 		const hmp = heatmap.getContext('2d')
 		hmp.width = image.width
 		hmp.height = image.height
-		const goals = document.querySelector('#goals');
 		const gls = heatmap.getContext('2d')
 		gls.width = image.width
 		gls.height = image.height
@@ -136,11 +133,7 @@
 <script>
 	goals_array = []
 	function checkType() {
-		if (document.getElementById('isGoal').checked === false && document.getElementById('isShot').checked === false){
-			document.getElementById("sendData").disabled = true
-		} else {
-			document.getElementById("sendData").disabled = false
-		}
+		document.getElementById("sendData").disabled = document.getElementById('isGoal').checked === false && document.getElementById('isShot').checked === false;
 	}
 	function openModal(x,y) {
 		checkType()
@@ -189,8 +182,7 @@
 		document.getElementById('isShot').checked = false
 		//document.getElementById("player").selectedIndex = 0;
 	}
-	// Get the modal
-	const modal = document.getElementById('exampleModal');
+
 
 	//const modal_toggle = document.getElementById('heatmap')
 	//modal_toggle.addEventListener('mouseup', function(e) {
