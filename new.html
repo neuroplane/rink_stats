@@ -24,8 +24,7 @@
 			<div id = "form">
 				<div class="mb-3">
 					<select id="select_year" class="form-select" aria-label="Default select example" onchange="getTeams(this)">
-						<option value="2013">2013</option>
-						<option value="2014">2014</option>
+
 					</select>
 				</div>
 				<div class="mb-3">
@@ -36,6 +35,9 @@
 				</div>
 				<div class="mb-3">
 					<input class="form-control" type="date" id="dateSelector" value="">
+				</div>
+				<div class="mb-3">
+					<input class="form-control" type="text" id="game_url" value="" placeholder="Ссылка на игру">
 				</div>
 				<div class="mb-3">
 					<button type="button" class="btn btn-primary" onclick="newGame()">Создать игру</button>
@@ -101,10 +103,12 @@
 		const host = getTeamId(host_team.options[host_team.selectedIndex].text)
 		const guest = getTeamId(guest_team.options[guest_team.selectedIndex].text)
 		const gameDate = document.getElementById("dateSelector").value
+		const gameUrl = document.getElementById("game_url").value
 
 		newGameObject["host"] = host
 		newGameObject["guest"] = guest
 		newGameObject["game_date"] = gameDate
+		newGameObject["game_url"] = gameUrl
 
 		preparedNewGame["items"] = [newGameObject]
 		console.log(JSON.stringify(preparedNewGame))
