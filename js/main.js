@@ -2,7 +2,7 @@
 
 let screen_height = window.innerHeight
 let screen_width = screen_height/2.2;
-console.log(screen_width + ", " + screen_height)
+//console.log(screen_width + ", " + screen_height)
 
 const c = document.getElementById("heatmap");
 const ctx = c.getContext("2d");
@@ -18,10 +18,10 @@ function draw_text(x,y,text) {
     let canvas = document.querySelector('#goals');
     let ctx = canvas.getContext('2d');
     ctx.save()
-    ctx.fillStyle = "#2c2c2c";
+    ctx.fillStyle = "#3b3b3b";
     ctx.strokeStyle = "#eeeeee";
     ctx.lineWidth = 1
-    ctx.font = "bold 40pt Arial";
+    ctx.font = "bold 50pt Arial";
     ctx.textAlign = "center"
     ctx.textBaseline = "middle"
     ctx.fillText(text, x, y);
@@ -36,7 +36,7 @@ function drawPoint(x,y) {
     const point = [x,y, 0.4]
     heat.add(point);
     heat.resize()
-    heat.draw(0.01);
+    heat.draw(0.05);
 }
 function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
@@ -50,3 +50,5 @@ const canvas_heatmap = document.querySelector('#goals')
 canvas_heatmap.addEventListener('mouseup', function(e) {
     getCursorPosition(canvas_heatmap, e)
 })
+
+/* HEATMAP */

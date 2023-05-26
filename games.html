@@ -39,7 +39,7 @@
 </div>
 
 <script id="cardGen">
-	function newCard(title, subtitle,text,url) {
+	function newCard(title, subtitle,text,url, game_id) {
 		const card = document.createElement("div");
 		card.setAttribute("class", "card mx-3 mb-3")
 		card.set
@@ -56,11 +56,16 @@
 		cardText.innerHTML = text
 		const cardUrl = document.createElement("a")
 		cardUrl.href = url
-		cardUrl.setAttribute("class", "btn btn-primary")
+		cardUrl.setAttribute("class", "link-opacity-75 px-1")
 		cardUrl.setAttribute("target", "_blank")
 		const urlText = document.createTextNode("Просмотр");
 		cardUrl.appendChild(urlText)
-		cardBody.append(cardTitle, cardSubtitle, cardUrl)
+		const cardHeatmap = document.createElement("a")
+		cardHeatmap.setAttribute("class", "link-opacity-75 px-1")
+		cardHeatmap.href = "./index.html?game_id=" + game_id
+		const heatmapText = document.createTextNode("Тепловая карта");
+		cardHeatmap.appendChild(heatmapText)
+		cardBody.append(cardTitle, cardSubtitle, cardUrl, cardHeatmap)
 		card.append(cardBody)
 		document.getElementById("games").append(card)
 
@@ -71,7 +76,7 @@
 		const gamesArray = await APISendRequest("getgames", "{}")
 		for (let i = 0; i < gamesArray.length; i++) {
 			console.log(gamesArray[i])
-			newCard(gamesArray[i]['host'] + gamesArray[i]['host_city'] + " - " + gamesArray[i]['guest'] + gamesArray[i]['guest_city'], gamesArray[i]['game_date'], gamesArray[i]['host'] + gamesArray[i]['guest'], gamesArray[i]['game_url'])
+			newCard(gamesArray[i]['host'] + gamesArray[i]['host_city'] + " - " + gamesArray[i]['guest'] + gamesArray[i]['guest_city'], gamesArray[i]['game_date'], gamesArray[i]['host'] + gamesArray[i]['guest'], gamesArray[i]['game_url'], gamesArray[i]['game_id'] )
 		}
 	}
 </script>

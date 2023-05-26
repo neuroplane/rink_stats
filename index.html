@@ -5,12 +5,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Game stats</title>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/canvas@2.11.2/browser.min.js"></script>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <style>
 	body {
-		background-color: #ffffff;
+		background-color: #f3f3f3;
 	}
 	button {
 		touch-action: manipulation;
@@ -27,10 +27,17 @@
 	.render {
 		position: absolute;
 		/*top:0;*/
-		/*width:100%;*/
-		height:90%;
+		width:100%;
+		/*height:90%;*/
 		margin-left: auto; !important;
 		margin-right: auto; !important;
+	}
+
+	.table-sm{
+		font-size: small;
+	}
+	.table-sm>:not(caption)>*>* {
+		padding: .0rem 0.3rem;
 	}
 
 </style>
@@ -41,7 +48,25 @@
 	<canvas class="render position-absolute top-0 start-50 translate-middle-x" id='goals' ></canvas>
 </div>
 <div class="position-absolute bottom-0 start-50 translate-middle-x">
-	<p><small>Teams and stats</small></p>
+	<table class="table table-sm">
+		<tbody>
+		<tr>
+			<td></td>
+			<td style="width: 10%">Б</td>
+			<td style="width: 10%">Г</td>
+		</tr>
+		<tr>
+			<td id="hosts"></td>
+			<td ></td>
+			<td>6</td>
+		</tr>
+		<tr>
+			<td id="guests"></td>
+			<td>8</td>
+			<td>9</td>
+		</tr>
+		</tbody>
+	</table>
 </div>
 
 
@@ -129,7 +154,7 @@
 		context.font = '16px Arial';
 		context.fillText('ERROR!', 1, 3);
 	};
-	image.src = 'https://www.tagban.ru/plus/stats/img/rink3.svg';
+	image.src = 'https://www.tagban.ru/plus/stats/img/half_rink.svg';
 	////////////////////////////////////////
 
 </script>
@@ -159,7 +184,7 @@
 		let point_y = document.getElementById("coordinate_y").innerHTML
 		drawPoint(point_x, point_y)
 		if (document.getElementById('isGoal').checked === true){
-			draw_text(point_x, point_y, "⚫")
+			draw_text(point_x, point_y, "G")
 		}
 		document.getElementById("backdrop").style.display = "none"
 		document.getElementById("exampleModal").style.display = "none"
@@ -223,11 +248,57 @@
 				.catch(err => console.error(err));
 	}
 </script>
+<script id="getUrlParameters">
+	function getURLValues() {
+		const search = window.location.search.replace(/^\?/, '').replace(/\+/g, ' ');
+		const values = {};
+		if (search.length) {
+			let part, parts = search.split('&');
+
+			let i = 0, iLen = parts.length;
+			for (; i<iLen; i++ ) {
+				part = parts[i].split('=');
+				values[part[0]] = window.decodeURIComponent(part[1]);
+			}
+		}
+		console.log(values['game_id'])
+		return values['game_id'];
+	}
+</script>
+<script id="API">
+	function APISendRequest(funcName, body) {
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Token 11609376-ff57-401e-88a4-53f4c0904fd8'
+			},
+			body: body
+		};
+
+		return fetch('https://x125.ru/api/stats/'+funcName, options)
+				.then(response => response.json())
+				.then(response => {
+					return response
+				})
+				.catch(err => console.error(err));
+	}
+	async function populateWithGame(game_id) {
+		const options = {
+			"game_id": game_id
+		}
+		const game = await APISendRequest("getcurrentgame", JSON.stringify(options))
+		console.log(game[0])
+		document.getElementById("hosts").innerHTML = game[0]["host"]
+		document.getElementById("guests").innerHTML = game[0]["guest"]
+	}
+</script>
 <script>
 	const script = document.createElement('script');
 	script.src='js/json.js'+ '?t=' + Date.now();
 	document.body.appendChild(script);
 	script.addEventListener('load', function() {
+
 		const script3 = document.createElement('script');
 		script3.src='./js/heatmap.js'+ '?t=' + Date.now();
 		document.body.appendChild(script3);
@@ -235,6 +306,7 @@
 		const script2 = document.createElement('script');
 		script2.src='js/main.js'+ '?t=' + Date.now();
 		document.body.appendChild(script2);
+		populateWithGame(getURLValues())
 
 	});
 
