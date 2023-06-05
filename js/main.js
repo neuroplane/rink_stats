@@ -50,5 +50,19 @@ const canvas_heatmap = document.querySelector('#goals')
 canvas_heatmap.addEventListener('mouseup', function(e) {
     getCursorPosition(canvas_heatmap, e)
 })
+/*-------------- API SEND DATA GET RESPONSE --------------------*/
+function APISendRequest(funcName, body) {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Token 11609376-ff57-401e-88a4-53f4c0904fd8'
+        },
+        body: body
+    };
 
-/* HEATMAP */
+    return fetch('https://x125.ru/api/stats/'+funcName, options)
+        .then(response => response.json())
+        .then(response => {return response})
+        .catch(err => console.error(err));
+}
