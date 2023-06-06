@@ -160,15 +160,11 @@
 			<div id="host_goals" class="progress" role="progressbar">
 				<div id="host_goals_prog" class="progress-bar bs-primary-emphasis"></div>
 			</div>
-			<div id="guest_goals" class="progress" role="progressbar"">
+			<div id="guest_goals" class="progress" role="progressbar">
 				<div id="guest_goals_prog" class="progress-bar bs-primary-emphasis"></div>
 			</div>
 		</div>
 	</div>
-		</div>
-	</div>
-
-</div>
 </div>
 
 
@@ -474,12 +470,13 @@
 		};
 
 		return fetch('https://x125.ru/api/stats/'+funcName, options)
+				.catch(err => console.error(err))
 				.then(response => response.json())
 				.then(response => {
 					console.log(response)
 					return response;
 					})
-				.catch(err => console.error(err));
+
 	}
 	async function populateWithGame(game_id) {
 		const options = {
@@ -524,7 +521,6 @@
 		document.body.appendChild(script2);
 		populateWithGame(getURLValues())
 		genProg()
-		document.cookie
 	});
 </script>
 </body>

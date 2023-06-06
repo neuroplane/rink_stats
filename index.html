@@ -98,12 +98,6 @@
 				})
 				.catch(err => console.error(err));
 	}
-	function gamesTable() {
-		APISendRequest("getgames", "{}")
-		const table = document.createElement("table", {is:"cool"})
-		table.setAttribute("class", "table")
-		document.getElementById("games").append(table)
-	}
 </script>
 <script>
 	const script = document.createElement('script');
