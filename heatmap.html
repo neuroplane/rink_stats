@@ -72,18 +72,21 @@
 	#guest_goals_prog {
 		background-color: #0d3db7; !important;
 	}
-	#hosts {
+	/*#hosts {
 		background-color: #ffafaf;
 		color: #2f2f2f;
 	}
 	#guests {
 		background-color: #7c8dff;
-	}
+	}*/
 	.types {
 		width: 30%;
 		background-color: #f3f3f3;
 		color: black;
 		text-align: left;
+	}
+	.team{
+		height: 1em; !important;
 	}
 
 
@@ -108,15 +111,21 @@
 		<div class="progbar types progress progress-bar" >
 			&nbsp
 		</div>
-		<div  class="progbar progress-stacked" style="width: 70%">
-			<div class="progress" role="progressbar"  style="width: 50%">
-				<div id="hosts" class="progress-bar "></div>
+		<!--------------------------->
+		<div  class=" progress-stacked" style="width: 70%; height: auto">
+			<div class="pe-1" role=""  style="width: 50%">
+				<input  type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" checked>
+				<label id="hosts" style="width: 100%" class="btn btn-sm btn-outline-danger" for="danger-outlined">&nbsp</label>
 			</div>
-			<div class="progress" role="progressbar"  style="width: 50%">
-				<div id="guests" class="progress-bar "></div>
+			<div class="ps-1" role=""  style="width: 50%">
+				<input type="radio" class="btn-check" name="options-outlined" id="primary-outlined" autocomplete="off">
+				<label id="guests" style="width: 100%" class="btn btn-sm btn-outline-primary" for="primary-outlined">&nbsp</label>
 			</div>
 		</div>
 	</div>
+	<!------------------------------------------>
+
+
 	<div class="stats-inline">
 		<div class="progbar types progress progress-bar">
 			БРОСКИ
@@ -156,6 +165,8 @@
 			</div>
 		</div>
 	</div>
+	<hr>
+		<button type="button" class="btn btn-sm btn-outline-primary" onclick='window.history.go(-1); return false;'>Назад</button>
 </div>
 
 
@@ -488,9 +499,11 @@
 			if (shot['team_id'] === game[0]['host_id']){
 				hostShots.push(shot)
 				drawPoint(shot['shot_x'], shot['shot_y'])
+				console.log(shot['is_goal'])
 			} else if (shot['team_id'] === game[0]['guest_id']){
 				guestShots.push(shot)
 				drawPoint(shot['shot_x'], shot['shot_y'])
+				console.log(shot['is_goal'])
 			}
 		}
 	}

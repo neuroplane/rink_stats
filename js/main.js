@@ -31,6 +31,7 @@ function draw_text(x,y,text) {
 //alert(to_y(4))
 const data = []
 const heat = simpleheat('heatmap');
+/*  DRAW POINT    */
 function drawPoint(x,y) {
     heat.data(data);
     const point = [x,y, 0.4]
@@ -51,7 +52,7 @@ canvas_heatmap.addEventListener('mouseup', function(e) {
     getCursorPosition(canvas_heatmap, e)
 })
 /*-------------- API SEND DATA GET RESPONSE --------------------*/
-function APISendRequest(funcName, body) {
+/*function APISendRequest(funcName, body) {
     const options = {
         method: 'POST',
         headers: {
@@ -66,3 +67,4 @@ function APISendRequest(funcName, body) {
         .then(response => {return response})
         .catch(err => console.error(err));
 }
+*/
