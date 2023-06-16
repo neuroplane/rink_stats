@@ -50,6 +50,7 @@ async function redraw(team) {
     //heat.data(newData)
     /*  FUNC TAB    */
     const teamShots = await APISendRequest("getteamheatmap", JSON.stringify({"game_id": getURLValues(), "team_id": team}))
+    console.log(JSON.stringify(teamShots))
     for (const point of teamShots) {
         drawPoint(point['shot_x'], point['shot_y'])
         if (point['is_target'] === true){

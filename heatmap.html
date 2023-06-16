@@ -401,9 +401,10 @@
 		shots.push([parseInt(point_x),parseInt(point_y),document.getElementById('isGoal').checked])
 		console.log(shots)
 		console.log(getCoordinates(shots))
-		sendShot("4", "1", point_x, point_y, document.getElementById('isGoal').checked)
+		sendShot("4", "1", point_x, point_y, document.getElementById('isGoal').checked, document.getElementById('isTarget').checked)
 		document.getElementById('isGoal').checked = false
 		document.getElementById('isShot').checked = false
+		document.getElementById('isTarget').checked = false
 	}
 	function resetModal() {
 		document.getElementById("backdrop").style.display = "none"
@@ -413,6 +414,7 @@
 		document.getElementById('team2').checked = false
 		document.getElementById('isGoal').checked = false
 		document.getElementById('isShot').checked = false
+		document.getElementById('isTarget').checked = false
 		//document.getElementById("player").selectedIndex = 0;
 	}
 
@@ -429,7 +431,8 @@
 	function transfer_team_data(attribute, data) {
 		document.getElementById("team_id_data").setAttribute(attribute, data)
 	}
-	function sendShot(game, player,x,y, isGoal, team_id) {
+
+	function sendShot(game, player,x,y, isGoal, team_id, isTarget) {
 		let params = JSON.stringify({
 			"items":
 					[
@@ -439,7 +442,8 @@
 						"shot_y": parseInt(y),
 						"is_goal": isGoal,
 						"team_id": document.getElementById("team_id_data").getAttribute("team_id"),
-						"player_id": document.getElementById("team_id_data").getAttribute("player_id")
+						"player_id": document.getElementById("team_id_data").getAttribute("player_id"),
+						"is_target": isTarget
 						}
 					]
 		})
