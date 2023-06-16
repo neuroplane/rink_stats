@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Game stats</title>
 </head>
+<script src="./js/urgent.js"></script>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 
@@ -108,19 +109,11 @@
 
 <div class=" fixed-bottom container mb-2">
 	<div class="stats-inline">
-		<div class="progbar types progress progress-bar" >
-			&nbsp
-		</div>
+		<div class="" style="width: 30%;">&nbsp</div>
 		<!--------------------------->
-		<div  class=" progress-stacked" style="width: 70%; height: auto">
-			<div class="pe-1" role=""  style="width: 50%">
-				<input  type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" checked>
-				<label id="hosts" style="width: 100%" class="btn btn-sm btn-outline-danger" for="danger-outlined">&nbsp</label>
-			</div>
-			<div class="ps-1" role=""  style="width: 50%">
-				<input type="radio" class="btn-check" name="options-outlined" id="primary-outlined" autocomplete="off">
-				<label id="guests" style="width: 100%" class="btn btn-sm btn-outline-primary" for="primary-outlined">&nbsp</label>
-			</div>
+		<div  class=" " style="width: 70%; height: auto; display: flex">
+				<button hasColor="danger" isActive="true" id="hosts" type="button" class="toggler btn btn-danger" style="width: 50%; margin-left: auto" onclick="toggleTeams(this)"></button>
+				<button hasColor="primary" isActive="false" id="guests" type="button" class="toggler btn btn-outline-primary" style="width: 50%; margin-right: auto" onclick="toggleTeams(this)"></button>
 		</div>
 	</div>
 	<!------------------------------------------>
@@ -182,11 +175,16 @@
 				<form>
 					<div>
 						<div class="btn-group btn-group-sm"  style="width: 100%" role="group" aria-label="Basic example">
+							<input type="radio" class="btn-check" name="shots" id="isShot" autocomplete="off" onchange="checkType()">
+							<label class="btn btn-outline-primary" for="isShot">Бросок</label>
+
+							<input type="radio" class="btn-check" name="shots" id="isTarget" autocomplete="off" onchange="checkType()">
+							<label class="btn btn-outline-warning" for="isTarget">Створ</label>
+
 							<input type="radio" class="btn-check btn-sm" name="shots" id="isGoal" autocomplete="off" onchange="checkType()">
 							<label class="btn btn-outline-danger" for="isGoal">Гол</label>
 
-							<input type="radio" class="btn-check" name="shots" id="isShot" autocomplete="off" onchange="checkType()">
-							<label class="btn btn-outline-primary" for="isShot">Бросок</label>
+
 						</div>
 					</div>
 					<hr>
@@ -229,6 +227,26 @@
 
 
 <!------------------------------------------------>
+<script id="toggling">
+	function toggleTeams(element) {
+		const togglers = document.getElementsByClassName("toggler")
+		console.log(togglers)
+		if (element.getAttribute("isActive") === "false"){
+			for (const button of togglers) {
+				if (button.getAttribute("isActive") === "true"){
+					button.setAttribute("isActive", "false")
+					button.classList.remove("btn-" + button.getAttribute("hasColor"))
+					button.classList.add("btn-outline-" + button.getAttribute("hasColor"))
+					redraw(element.getAttribute("team_id"))
+				} else {
+					button.setAttribute("isActive", "true")
+					button.classList.remove("btn-outline-" + button.getAttribute("hasColor"))
+					button.classList.add("btn-" + button.getAttribute("hasColor"))
+				}
+			}
+		}
+	}
+</script>
 <script id = "genProg">
 	function randomIntFromInterval(min, max) { // min and max included
 		return Math.floor(Math.random() * (max - min + 1) + min)
@@ -276,10 +294,6 @@
 		document.getElementById("guest_goals").setAttribute("style", "width: " + g_g_p + "%")
 		document.getElementById("guest_goals_prog").innerHTML = g_g
 
-
-		console.log(h_s, h_sog, h_g, g_s, g_sog, g_g)
-		console.log(h_s_p, h_sog_p, h_g_p)
-		console.log((h_s + h_sog + h_g)/ h_s)
 	}
 </script>
 <script id="svg_rendering">
@@ -346,7 +360,8 @@
 
 	}
 	function checkType() {
-		if ((document.getElementById('isGoal').checked === false  && document.getElementById('isShot').checked === false) || (document.getElementById('team1').checked === false && document.getElementById('team2').checked === false)){
+		if ((document.getElementById('isGoal').checked === false  && document.getElementById('isShot').checked === false && document.getElementById('isTarget').checked === false) ||
+				(document.getElementById('team1').checked === false && document.getElementById('team2').checked === false)){
 			document.getElementById("sendData").disabled = true
 		} else {
 			document.getElementById("sendData").disabled = false
@@ -456,7 +471,6 @@
 				values[part[0]] = window.decodeURIComponent(part[1]);
 			}
 		}
-		console.log(values['game_id'])
 		return values['game_id'];
 	}
 </script>
@@ -487,25 +501,28 @@
 		const game = await APISendRequest("getcurrentgame", JSON.stringify(options))
 		transfer_team_data("game_id", game[0]["game_id"])
 		document.getElementById("hosts").innerHTML = game[0]["host"]
+		document.getElementById("hosts").setAttribute("team_id", game[0]["host_id"])
 		document.getElementById("team1").setAttribute("team_id", game[0]["host_id"])
 		document.getElementById("guests").innerHTML = game[0]["guest"]
+		document.getElementById("guests").setAttribute("team_id", game[0]["guest_id"])
 		document.getElementById("team2").setAttribute("team_id", game[0]["guest_id"])
 		document.getElementById("team1_label").innerHTML = game[0]["host"]
 		document.getElementById("team2_label").innerHTML = game[0]["guest"]
 		let hostShots = []
 		let guestShots = []
+		await redraw(game[0]["host_id"])
+		/*
 		const heatArr = await APISendRequest("getheatmap", JSON.stringify({"game_id": getURLValues()}))
 		for (const shot of heatArr) {
 			if (shot['team_id'] === game[0]['host_id']){
 				hostShots.push(shot)
 				drawPoint(shot['shot_x'], shot['shot_y'])
-				console.log(shot['is_goal'])
 			} else if (shot['team_id'] === game[0]['guest_id']){
 				guestShots.push(shot)
 				drawPoint(shot['shot_x'], shot['shot_y'])
-				console.log(shot['is_goal'])
 			}
 		}
+		*/
 	}
 
 </script>
